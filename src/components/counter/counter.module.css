@@ -1,0 +1,21 @@
+.wrapper {
+    background-color: #70b7fa;
+    border-radius: 10px;
+    height: 60%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+}
+
+.active {
+    background-color: #70b7fa;
+    border-radius: 10px;
+    height: 60%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 60px;
+    font-weight: 600;
+    color: red;
+}
