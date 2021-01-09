@@ -22,17 +22,6 @@
     color: #70b7fa;
 }
 
-.values__item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.input {
-    width: 150px;
-    height: 25px;
-}
-
 .buttons {
     height: 40%;
     display: flex;
@@ -41,3 +30,4 @@
     border: 5px solid #70b7fa;
     border-radius: 10px;
 }
+
