@@ -1,14 +1,5 @@
-.wrapper {
-    height: 40%;
-    border: 5px solid #70b7fa;
-    border-radius: 10px;
-    margin-top: 20px;
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-}
-
 .btn {
+    height: 60px;
     background-color: #70b7fa;
     font-size: 50px;
     font-weight: 600;
@@ -21,6 +12,7 @@
 }
 
 .disable_btn {
+    height: 60px;
     background-color: #70b7fa;
     font-size: 50px;
     font-weight: 600;

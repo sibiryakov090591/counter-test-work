@@ -10,15 +10,27 @@
     border-radius: 10px;
 }
 
-.count {
+.values {
     border: 5px solid #70b7fa;
     border-radius: 10px;
     height: 60%;
+    padding: 20px;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 40px;
+    flex-direction: column;
+    justify-content: space-between;
+    font-size: 25px;
     color: #70b7fa;
+}
+
+.values__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.input {
+    width: 150px;
+    height: 25px;
 }
 
 .buttons {
@@ -28,16 +40,4 @@
     align-items: center;
     border: 5px solid #70b7fa;
     border-radius: 10px;
-}
-
-.active {
-    font-size: 60px;
-    font-weight: 600;
-    color: red;
-}
-
-.error {
-    font-size: 60px;
-    font-weight: 600;
-    color: red;
 }
