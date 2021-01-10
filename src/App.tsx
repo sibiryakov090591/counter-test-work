@@ -5,39 +5,54 @@ import {Setter} from "./components/setter/setter";
 
 function App() {
 
+    // local storage
+    const localStorageMinValue = Number(localStorage.getItem("start"));
+    const localStorageMaxValue = Number(localStorage.getItem("end"));
+    const localStorageErrorStatus = localStorage.getItem("error") === "true";
+
     // local state
-    const [minCounter, setMinCounter] = useState<number>(0);
-    const [maxCounter, setMaxCounter] = useState<number>(5);
-    const [counter, setCounter] = useState<number>(minCounter); // Present counter value
-    const [error, setError] = useState<boolean>(false); // Show error message for counter window
-    const [starting, setStarting] = useState<boolean>(false); // Show window for running counter
+    const [minCounter, setMinCounter] = useState<number>(localStorageMinValue);
+    const [maxCounter, setMaxCounter] = useState<number>(localStorageMaxValue);
+    const [counter, setCounter] = useState<number>(minCounter);
+    const [error, setError] = useState<boolean>(localStorageErrorStatus);
+    const [starting, setStarting] = useState<boolean>(false);
 
+    localStorage.setItem("start", "" + minCounter);
+    localStorage.setItem("end", "" + maxCounter);
 
-    // functions
+    // callback functions
     const changeMinCounterValue = (min: number) => {
         if (min === maxCounter || min > maxCounter || min < 0) {
             setError(true);
-            setMinCounter(min);
+            localStorage.setItem("error", "true");
             setStarting(false);
+            localStorage.setItem("start", "" + minCounter);
+            setMinCounter(min);
             return;
         }
         setError(false);
-        setMinCounter(min);
+        localStorage.setItem("error", "false");
         setCounter(min);
         setStarting(false);
+        localStorage.setItem("start", "" + minCounter);
+        setMinCounter(min);
     }
 
     const changeMaxCounterValue = (max: number) => {
         if (minCounter === max || minCounter > max || minCounter < 0) {
             setError(true);
-            setMaxCounter(max);
+            localStorage.setItem("error", "true");
             setStarting(false);
+            localStorage.setItem("end", "" + maxCounter);
+            setMaxCounter(max);
             return
         }
         setCounter(0);
         setError(false);
-        setMaxCounter(max);
+        localStorage.setItem("error", "false");
         setStarting(false);
+        localStorage.setItem("end", "" + maxCounter);
+        setMaxCounter(max);
     }
 
     const setCounterValues = () => {
