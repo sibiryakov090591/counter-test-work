@@ -17,11 +17,12 @@ function App() {
     const [error, setError] = useState<boolean>(localStorageErrorStatus);
     const [starting, setStarting] = useState<boolean>(false);
 
+    // initial local storage state values
     localStorage.setItem("start", "" + minCounter);
     localStorage.setItem("end", "" + maxCounter);
     if (minCounter === maxCounter || minCounter > maxCounter || minCounter < 0) {
         localStorage.setItem("error", "true")
-    };
+    }
 
     // callback functions
     const changeMinCounterValue = (min: number) => {
