@@ -8,7 +8,7 @@ function App() {
     // local storage
     const localStorageMinValue = Number(localStorage.getItem("start"));
     const localStorageMaxValue = Number(localStorage.getItem("end"));
-    const localStorageErrorStatus = localStorage.getItem("error") === "true";
+    const localStorageErrorStatus = Boolean(localStorage.getItem("error"));
 
     // local state
     const [minCounter, setMinCounter] = useState<number>(localStorageMinValue);
@@ -19,6 +19,9 @@ function App() {
 
     localStorage.setItem("start", "" + minCounter);
     localStorage.setItem("end", "" + maxCounter);
+    if (minCounter === maxCounter || minCounter > maxCounter || minCounter < 0) {
+        localStorage.setItem("error", "true")
+    };
 
     // callback functions
     const changeMinCounterValue = (min: number) => {

@@ -11,23 +11,21 @@ type PropsType = {
 
 export const InputComponent: React.FC<PropsType> = (props) => {
 
-    const inputClassName = style.input;
-    const errorClassName = style.input + " " + style.error;
+    const inputClassName = props.maxValue <= 0
+    || props.maxValue < props.minValue
+    || props.maxValue === props.minValue
+    || props.value < 0
+        ? style.input + " " + style.error
+        : style.input;
 
     return (
 
         <div className={style.values__item}>
             <div>{props.title}</div>
-            <input className={props.maxValue <= 0
-            || props.maxValue < props.minValue
-            || props.maxValue === props.minValue
-            || props.value < 0
-                ? errorClassName
-                : inputClassName}
+            <input className={inputClassName}
                    onChange={props.onChangeCallback}
                    value={props.value}
                    type="number"
-                   step="число"
             />
         </div>
 
