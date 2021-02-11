@@ -6,20 +6,24 @@ import {Setter} from "./components/setter/setter";
 function App() {
 
     // local storage
-    const localStorageMinValue = Number(localStorage.getItem("start"));
-    const localStorageMaxValue = Number(localStorage.getItem("end"));
-    const localStorageErrorStatus = Boolean(localStorage.getItem("error"));
+    const minValue = localStorage.getItem("minValue") !== null
+        ? Number(localStorage.getItem("minValue"))
+        : 0;
+    const maxValue = localStorage.getItem("maxValue") !== null
+        ? Number(localStorage.getItem("maxValue"))
+        : 5;
+    const errorStatus = localStorage.getItem("error") === "true"
 
     // local state
-    const [minCounter, setMinCounter] = useState<number>(localStorageMinValue);
-    const [maxCounter, setMaxCounter] = useState<number>(localStorageMaxValue);
+    const [minCounter, setMinCounter] = useState<number>(minValue);
+    const [maxCounter, setMaxCounter] = useState<number>(maxValue);
     const [counter, setCounter] = useState<number>(minCounter);
-    const [error, setError] = useState<boolean>(localStorageErrorStatus);
+    const [error, setError] = useState<boolean>(errorStatus);
     const [starting, setStarting] = useState<boolean>(false);
 
     // initial local storage state values
-    localStorage.setItem("start", "" + minCounter);
-    localStorage.setItem("end", "" + maxCounter);
+    localStorage.setItem("minValue", "" + minCounter);
+    localStorage.setItem("maxValue", "" + maxCounter);
     if (minCounter === maxCounter || minCounter > maxCounter || minCounter < 0) {
         localStorage.setItem("error", "true")
     }
@@ -30,7 +34,7 @@ function App() {
             setError(true);
             localStorage.setItem("error", "true");
             setStarting(false);
-            localStorage.setItem("start", "" + minCounter);
+            localStorage.setItem("minValue", "" + minCounter);
             setMinCounter(min);
             return;
         }
@@ -38,7 +42,7 @@ function App() {
         localStorage.setItem("error", "false");
         setCounter(min);
         setStarting(false);
-        localStorage.setItem("start", "" + minCounter);
+        localStorage.setItem("minValue", "" + minCounter);
         setMinCounter(min);
     }
 
@@ -47,7 +51,7 @@ function App() {
             setError(true);
             localStorage.setItem("error", "true");
             setStarting(false);
-            localStorage.setItem("end", "" + maxCounter);
+            localStorage.setItem("maxValue", "" + maxCounter);
             setMaxCounter(max);
             return
         }
@@ -55,7 +59,7 @@ function App() {
         setError(false);
         localStorage.setItem("error", "false");
         setStarting(false);
-        localStorage.setItem("end", "" + maxCounter);
+        localStorage.setItem("maxValue", "" + maxCounter);
         setMaxCounter(max);
     }
 
