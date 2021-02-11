@@ -1,84 +1,63 @@
-import React, {useState} from 'react';
+import React, {useEffect} from 'react';
 import './App.css';
 import {Counter} from "./components/counter/counter";
 import {Setter} from "./components/setter/setter";
+import {counterActions, initializedLocalStorageValues, setErrorTC, setMaxValueTC, setMinValueTC} from "./state/counter-reducer";
+import {useDispatch, useSelector} from "react-redux";
+import {RootStateType} from "./state/store";
 
 function App() {
 
-    // local storage
-    const minValue = localStorage.getItem("minValue") !== null
-        ? Number(localStorage.getItem("minValue"))
-        : 0;
-    const maxValue = localStorage.getItem("maxValue") !== null
-        ? Number(localStorage.getItem("maxValue"))
-        : 5;
-    const errorStatus = localStorage.getItem("error") === "true"
+    const {
+        minCounterValue,
+        maxCounterValue,
+        errorStatus,
+        currentCounterValue,
+        isStarting
+    } = useSelector((state: RootStateType) => state.counter);
 
-    // local state
-    const [minCounter, setMinCounter] = useState<number>(minValue);
-    const [maxCounter, setMaxCounter] = useState<number>(maxValue);
-    const [counter, setCounter] = useState<number>(minCounter);
-    const [error, setError] = useState<boolean>(errorStatus);
-    const [starting, setStarting] = useState<boolean>(false);
+    const dispatch = useDispatch();
 
-    // initial local storage state values
-    localStorage.setItem("minValue", "" + minCounter);
-    localStorage.setItem("maxValue", "" + maxCounter);
-    if (minCounter === maxCounter || minCounter > maxCounter || minCounter < 0) {
-        localStorage.setItem("error", "true")
-    }
+    useEffect(() => {
+        dispatch(initializedLocalStorageValues(minCounterValue, maxCounterValue));
+    }, [])
 
     // callback functions
     const changeMinCounterValue = (min: number) => {
-        if (min === maxCounter || min > maxCounter || min < 0) {
-            setError(true);
-            localStorage.setItem("error", "true");
-            setStarting(false);
-            localStorage.setItem("minValue", "" + minCounter);
-            setMinCounter(min);
-            return;
+        if (min === maxCounterValue || min > maxCounterValue || min < 0) {
+            dispatch(setErrorTC(true))
+            dispatch(setMinValueTC(min))
+            return
         }
-        setError(false);
-        localStorage.setItem("error", "false");
-        setCounter(min);
-        setStarting(false);
-        localStorage.setItem("minValue", "" + minCounter);
-        setMinCounter(min);
+        dispatch(setErrorTC(false))
+        dispatch(setMinValueTC(min))
     }
 
     const changeMaxCounterValue = (max: number) => {
-        if (minCounter === max || minCounter > max || minCounter < 0) {
-            setError(true);
-            localStorage.setItem("error", "true");
-            setStarting(false);
-            localStorage.setItem("maxValue", "" + maxCounter);
-            setMaxCounter(max);
+        if (minCounterValue === max || minCounterValue > max || minCounterValue < 0) {
+            dispatch(setErrorTC(true))
+            dispatch(setMaxValueTC(max))
             return
         }
-        setCounter(0);
-        setError(false);
-        localStorage.setItem("error", "false");
-        setStarting(false);
-        localStorage.setItem("maxValue", "" + maxCounter);
-        setMaxCounter(max);
+        dispatch(setErrorTC(false))
+        dispatch(setMaxValueTC(max))
     }
 
     const setCounterValues = () => {
-        if (error) return;
-        if (starting) return;
-        setStarting(true);
-        setCounter(minCounter);
+        if (errorStatus) return;
+        if (isStarting) return;
+        dispatch(counterActions.startCounter())
     }
 
     const incrementCounter = () => {
-        if (counter >= maxCounter) {
+        if (currentCounterValue >= maxCounterValue) {
             return;
         }
-        setCounter(counter + 1);
+        dispatch(counterActions.incrementCounter())
     }
 
     const resetCounter = () => {
-            setCounter(minCounter);
+        dispatch(counterActions.resetCounter())
     }
 
     return (
@@ -86,19 +65,19 @@ function App() {
             <Setter changeMinCounterValue={changeMinCounterValue}
                     changeMaxCounterValue={changeMaxCounterValue}
                     setCounterValues={setCounterValues}
-                    minValue={minCounter}
-                    maxValue={maxCounter}
-                    isStarting={starting}
-                    errorStatus={error}
+                    minValue={minCounterValue}
+                    maxValue={maxCounterValue}
+                    isStarting={isStarting}
+                    errorStatus={errorStatus}
             />
 
             <Counter incrementCounter={incrementCounter}
                      resetCounter={resetCounter}
-                     errorStatus={error}
-                     counterValue={counter}
-                     minValue={minCounter}
-                     maxValue={maxCounter}
-                     isStarting={starting}
+                     errorStatus={errorStatus}
+                     counterValue={currentCounterValue}
+                     minValue={minCounterValue}
+                     maxValue={maxCounterValue}
+                     isStarting={isStarting}
             />
         </div>
     );
